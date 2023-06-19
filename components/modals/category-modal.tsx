@@ -3,15 +3,18 @@
 import { Modal } from "@/components/ui/modal";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useCategoryModal } from "@/hooks/useCategoryModal";
+import { useCategoryModal } from "@/hooks/use-category-modal";
 
 export const CategoryModal = () => {
   const categoryModal = useCategoryModal();
 
+  const title = categoryModal.isEdit ? 'Edit category' : 'Create category';
+  const description = categoryModal.isEdit ? 'Edit a category.' : 'Add a new category';
+
   return (
     <Modal
-      title="Create category"
-      description="Add a new category."
+      title={title}
+      description={description}
       isOpen={categoryModal.isOpen} 
       onClose={categoryModal.onClose}
     >

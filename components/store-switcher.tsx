@@ -19,35 +19,25 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useStoreModal } from "@/hooks/useStoreModal"
-
-const stores = [
-  {
-    label: "Clothes Store",
-    value: "acme-inc",
-  },
-  {
-    label: "Tech Store",
-    value: "monsters",
-  },
-  {
-    label: "Pet Store",
-    value: "pets",
-  },
-]
-
-type Store = (typeof stores)[number];
+import { useStoreModal } from "@/hooks/use-store-modal"
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
 
-interface StoreSwitcherProps extends PopoverTriggerProps {}
+interface StoreSwitcherProps extends PopoverTriggerProps {
+  items: Record<string, any>[];
+}
 
-export default function StoreSwitcher({ className }: StoreSwitcherProps) {
+export default function StoreSwitcher({ className, items = [] }: StoreSwitcherProps) {
   const storeModal = useStoreModal();
 
+  const formattedItems = items.map((item) => ({
+    label: item.name,
+    value: item.id
+  }));
+
   const [open, setOpen] = React.useState(false)
-  const [selectedStore, setSelectedStore] = React.useState<Store>(
-    stores[0]
+  const [selectedStore, setSelectedStore] = React.useState(
+    formattedItems[0]
   )
 
   return (
@@ -72,7 +62,7 @@ export default function StoreSwitcher({ className }: StoreSwitcherProps) {
             <CommandInput placeholder="Search store..." />
             <CommandEmpty>No store found.</CommandEmpty>
             <CommandGroup heading="Stores">
-              {stores.map((store) => (
+              {formattedItems.map((store) => (
                 <CommandItem
                   key={store.value}
                   onSelect={() => {

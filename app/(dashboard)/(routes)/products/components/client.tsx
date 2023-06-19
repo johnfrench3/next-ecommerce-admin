@@ -5,9 +5,9 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
+import { useProductModal } from "@/hooks/use-product-modal";
 
 import { Product, columns } from "./columns";
-import { useProductModal } from "@/hooks/useProductModal";
 
 interface ProductsClientProps {
   data: Product[];

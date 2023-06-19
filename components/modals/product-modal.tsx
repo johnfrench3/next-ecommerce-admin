@@ -3,15 +3,18 @@
 import { Modal } from "@/components/ui/modal";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useProductModal } from "@/hooks/useProductModal";
+import { useProductModal } from "@/hooks/use-product-modal";
 
 export const ProductModal = () => {
   const productModal = useProductModal();
 
+  const title = productModal.isEdit ? 'Edit product' : 'Create product';
+  const description = productModal.isEdit ? 'Edit a product.' : 'Add a new product';
+
   return (
     <Modal
-      title="Create product"
-      description="Add a new product."
+      title={title}
+      description={description}
       isOpen={productModal.isOpen} 
       onClose={productModal.onClose}
     >

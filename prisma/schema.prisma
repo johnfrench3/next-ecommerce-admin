@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Store {
+  id              String    @id @default(uuid())
+  name            String
+  categories      Category[] @relation("StoreToCategory")
+  products        Product[]  @relation("StoreToProduct")
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  storeId   String   // Foreign Key to Store
+  store     Store    @relation("StoreToCategory", fields: [storeId], references: [id])
+  name      String
+  products  Product[] @relation("CategoryToProduct")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId])
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  storeId     String   // Foreign Key to Store
+  store       Store    @relation("StoreToProduct", fields: [storeId], references: [id])
+  categoryId  String   // Foreign Key to Category
+  category    Category @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  name        String
+  price       Decimal
+  description String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([storeId])
+  @@index([categoryId])
+}

@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
-import { useCategoryModal } from "@/hooks/useCategoryModal";
+import { useCategoryModal } from "@/hooks/use-category-modal";
 
 import { Category, columns } from "./columns";
 
