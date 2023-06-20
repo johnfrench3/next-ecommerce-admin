@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -13,22 +14,41 @@ import {
 import { useCategoryModal } from "@/hooks/use-category-modal";
 import { AlertModal } from "@/components/modals/alert-modal";
 
-import { Category } from "./columns";
-import { useState } from "react";
+import { CategoryColumn } from "./columns";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { useParams, useRouter } from "next/navigation";
 
 interface CellActionProps {
-  data: Category;
+  data: CategoryColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
   data,
 }) => {
+  const router = useRouter();
+  const params = useParams();
   const categoryModal = useCategoryModal();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const onConfirm = async () => {
+    setLoading(true);
+    await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
+    toast.success('Category deleted.');
+    router.refresh();
+    setIsOpen(false);
+    setLoading(false);
+  };
 
   return (
     <>
-      <AlertModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <AlertModal 
+        isOpen={isOpen} 
+        onClose={() => setIsOpen(false)}
+        onConfirm={onConfirm}
+        loading={loading}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">

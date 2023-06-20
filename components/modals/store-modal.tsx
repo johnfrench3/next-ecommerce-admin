@@ -1,9 +1,9 @@
 "use client";
 
 import * as z from "zod"
+import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -32,8 +32,8 @@ export const StoreModal = () => {
     await axios.post('/api/stores', values);
     toast.success('Store created!');
     storeModal.onClose();
-    router.push('/');
     router.refresh();
+    router.push('/');
   };
 
   return (

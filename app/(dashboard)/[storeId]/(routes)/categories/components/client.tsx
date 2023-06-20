@@ -7,10 +7,10 @@ import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
 import { useCategoryModal } from "@/hooks/use-category-modal";
 
-import { Category, columns } from "./columns";
+import { columns, CategoryColumn } from "./columns";
 
 interface CategoriesClientProps {
-  data: Category[];
+  data: CategoryColumn[];
 }
 
 export const CategoriesClient: React.FC<CategoriesClientProps> = ({
