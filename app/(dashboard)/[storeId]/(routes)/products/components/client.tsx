@@ -7,10 +7,10 @@ import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
 import { useProductModal } from "@/hooks/use-product-modal";
 
-import { Product, columns } from "./columns";
+import { ProductColumn, columns } from "./columns";
 
 interface ProductsClientProps {
-  data: Product[];
+  data: ProductColumn[];
 };
 
 export const ProductsClient: React.FC<ProductsClientProps> = ({

@@ -38,10 +38,21 @@ model Product {
   name        String
   price       Decimal
   description String?
-  imageUrl    String?
+  images      Image[]  // Relation to Image model
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([storeId])
   @@index([categoryId])
+}
+
+model Image {
+  id          String   @id @default(uuid())
+  productId   String   // Foreign Key to Product
+  product     Product  @relation(fields: [productId], references: [id])
+  url         String   // URL of the image
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([productId])
 }
