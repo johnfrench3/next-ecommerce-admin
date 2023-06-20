@@ -28,17 +28,21 @@ export const CellAction: React.FC<CellActionProps> = ({
 }) => {
   const router = useRouter();
   const params = useParams();
-  const categoryModal = useCategoryModal();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const onConfirm = async () => {
-    setLoading(true);
-    await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
-    toast.success('Category deleted.');
-    router.refresh();
-    setOpen(false);
-    setLoading(false);
+    try {
+      setLoading(true);
+      await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
+      toast.success('Category deleted.');
+      router.refresh();
+    } catch (error) {
+      toast.error('Make sure you removed all products using this category first.');
+    } finally {
+      setOpen(false);
+      setLoading(false);
+    }
   };
 
   return (
@@ -59,7 +63,7 @@ export const CellAction: React.FC<CellActionProps> = ({
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => categoryModal.onEdit(data.id)}
+            onClick={() => router.push(`/${params.storeId}/categories/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>

@@ -38,6 +38,7 @@ export async function POST(
   
     return NextResponse.json(product);
   } catch (error) {
+    console.log('[PRODUCTS_POST]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
@@ -59,47 +60,7 @@ export async function GET(
   
     return NextResponse.json(products);
   } catch (error) {
-    return new NextResponse("Internal error", { status: 500 });
-  }
-};
-
-export async function PATCH(
-  req: Request,
-) {
-  try {
-    const body = await req.json();
-
-    const { id, name, price, categoryId } = body;
-
-    if (!id) {
-      return new NextResponse("Id is required", { status: 400 });
-    }
-
-    if (!name) {
-      return new NextResponse("Name is required", { status: 400 });
-    }
-
-    if (!price) {
-      return new NextResponse("Price is required", { status: 400 });
-    }
-
-    if (!categoryId) {
-      return new NextResponse("Category id is required", { status: 400 });
-    }
-
-    const product = await prismadb.product.update({
-      where: {
-        id
-      },
-      data: {
-        name,
-        price,
-        categoryId,
-      }
-    });
-  
-    return NextResponse.json(product);
-  } catch (error) {
+    console.log('[PRODUCTS_GET]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };

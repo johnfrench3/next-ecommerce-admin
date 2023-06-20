@@ -15,7 +15,6 @@ import {
   DropdownMenuLabel, 
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { useProductModal } from "@/hooks/use-product-modal";
 
 import { ProductColumn } from "./columns";
 
@@ -29,16 +28,20 @@ export const CellAction: React.FC<CellActionProps> = ({
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const productModal = useProductModal();
   const params = useParams();
 
   const onConfirm = async () => {
-    setLoading(true);
-    await axios.delete(`/api/${params.storeId}/products/${data.id}`);
-    toast.success('Product deleted.');
-    router.refresh();
-    setOpen(false);
-    setLoading(false);
+    try {
+      setLoading(true);
+      await axios.delete(`/api/${params.storeId}/products/${data.id}`);
+      toast.success('Product deleted.');
+      router.refresh();
+    } catch (error) {
+      toast.error('Something went wrong');
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
   };
 
   return (
@@ -59,7 +62,7 @@ export const CellAction: React.FC<CellActionProps> = ({
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => productModal.onEdit(data.id)}
+            onClick={() => router.push(`/${params.storeId}/products/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>

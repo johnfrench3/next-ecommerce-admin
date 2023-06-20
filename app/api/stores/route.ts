@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import prismadb from '@/lib/prismadb';
- 
+
 export async function POST(
   req: Request,
 ) {
@@ -22,6 +22,7 @@ export async function POST(
   
     return NextResponse.json(store);
   } catch (error) {
+    console.log('[STORES_POST]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };

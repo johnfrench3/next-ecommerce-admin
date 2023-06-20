@@ -1,8 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
-import prismadb from '@/lib/prismadb';
- 
-export async function POST(
+import prismadb from "@/lib/prismadb";
+
+
+export async function PATCH(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
@@ -19,21 +20,24 @@ export async function POST(
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-    const category = await prismadb.category.create({
+    const store = await prismadb.store.update({
+      where: {
+        id: params.storeId
+      },
       data: {
-        name,
-        storeId: params.storeId
+        name
       }
     });
   
-    return NextResponse.json(category);
+    return NextResponse.json(store);
   } catch (error) {
-    console.log('[CATEGORIES_POST]', error);
+    console.log('[STORE_PATCH]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
 
-export async function GET(
+
+export async function DELETE(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
@@ -42,15 +46,15 @@ export async function GET(
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-    const categories = await prismadb.category.findMany({
+    const store = await prismadb.store.delete({
       where: {
-        storeId: params.storeId
+        id: params.storeId
       }
     });
   
-    return NextResponse.json(categories);
+    return NextResponse.json(store);
   } catch (error) {
-    console.log('[CATEGORIES_GET]', error);
+    console.log('[STORE_DELETE]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
