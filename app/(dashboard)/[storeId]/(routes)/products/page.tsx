@@ -1,29 +1,44 @@
-import { Product } from "./components/columns"
+import { format } from "date-fns";
+
+import prismadb from "@/lib/prismadb";
+
 import { ProductsClient } from "./components/client";
+import { ProductColumn } from "./components/columns";
 
-async function getData(): Promise<Product[]> {
-  return [
-    {
-      id: "728ed52f",
-      name: "Zip Tote Basket",
-      price: "$10.99",
-      category: "Men",
-      createdAt: "June 13th, 2023",
+const formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+
+const ProductsPage = async ({
+  params
+}: {
+  params: { storeId: string }
+}) => {
+  const products = await prismadb.product.findMany({
+    where: {
+      storeId: params.storeId
     },
-  ];
-};
+    include: {
+      category: true
+    }
+  });
 
-const ProductsPage = async () => {
-  const data = await getData()
+  const formattedProducts: ProductColumn[] = products.map((item) => ({
+    id: item.id,
+    name: item.name,
+    price: formatter.format(item.price.toNumber()),
+    category: item.category.name,
+    createdAt: format(item.createdAt, 'MMMM do, yyyy'),
+  }));
 
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <ProductsClient data={data} />
+        <ProductsClient data={formattedProducts} />
       </div>
     </div>
   );
 };
 
 export default ProductsPage;
-
