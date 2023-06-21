@@ -11,6 +11,7 @@ datasource db {
 model Store {
   id              String    @id @default(uuid())
   name            String
+  userId          String
   categories      Category[] @relation("StoreToCategory")
   products        Product[]  @relation("StoreToProduct")
   sizes           Size[]     @relation("StoreToSize")
