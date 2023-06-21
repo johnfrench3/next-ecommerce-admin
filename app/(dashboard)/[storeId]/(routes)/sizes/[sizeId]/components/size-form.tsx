@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { Trash } from "lucide-react"
-import { Category } from "@prisma/client"
+import { Size } from "@prisma/client"
 import { useParams, useRouter } from "next/navigation"
 
 import { Input } from "@/components/ui/input"
@@ -26,15 +26,16 @@ import { AlertModal } from "@/components/modals/alert-modal"
 
 const formSchema = z.object({
   name: z.string().min(2),
+  value: z.string().min(1).max(3),
 });
 
-type CategoryFormValues = z.infer<typeof formSchema>
+type SizeFormValues = z.infer<typeof formSchema>
 
-interface CategoryFormProps {
-  initialData: Category | null;
+interface SizeFormProps {
+  initialData: Size | null;
 };
 
-export const CategoryForm: React.FC<CategoryFormProps> = ({
+export const SizeForm: React.FC<SizeFormProps> = ({
   initialData
 }) => {
   const params = useParams();
@@ -43,28 +44,28 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? 'Edit category' : 'Create category';
-  const description = initialData ? 'Edit a category.' : 'Add a new category';
-  const toastMessage = initialData ? 'Category updated.' : 'Category created.';
+  const title = initialData ? 'Edit size' : 'Create size';
+  const description = initialData ? 'Edit a size.' : 'Add a new size';
+  const toastMessage = initialData ? 'Size updated.' : 'Size created.';
   const action = initialData ? 'Save changes' : 'Create';
 
-  const form = useForm<CategoryFormValues>({
+  const form = useForm<SizeFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       name: ''
     }
   });
 
-  const onSubmit = async (data: CategoryFormValues) => {
+  const onSubmit = async (data: SizeFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
-        await axios.patch(`/api/${params.storeId}/categories/${params.categoryId}`, data);
+        await axios.patch(`/api/${params.storeId}/sizes/${params.sizeId}`, data);
       } else {
-        await axios.post(`/api/${params.storeId}/categories`, data);
+        await axios.post(`/api/${params.storeId}/sizes`, data);
       }
       router.refresh();
-      router.push(`/${params.storeId}/categories`);
+      router.push(`/${params.storeId}/sizes`);
       toast.success(toastMessage);
     } catch (error: any) {
       toast.error('Something went wrong.');
@@ -76,12 +77,12 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/categories/${params.categoryId}`);
+      await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`);
       router.refresh();
-      router.push(`/${params.storeId}/categories`);
-      toast.success('Category deleted.');
+      router.push(`/${params.storeId}/sizes`);
+      toast.success('Size deleted.');
     } catch (error: any) {
-      toast.error('Make sure you removed all products using this category first.');
+      toast.error('Make sure you removed all products using this size first.');
     } finally {
       setLoading(false);
       setOpen(false);
@@ -120,7 +121,20 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Category name" {...field} />
+                    <Input disabled={loading} placeholder="Size name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="value"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Value</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Size value" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

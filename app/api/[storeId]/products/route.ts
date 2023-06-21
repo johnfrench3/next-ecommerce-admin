@@ -9,10 +9,14 @@ export async function POST(
   try {
     const body = await req.json();
 
-    const { name, price, categoryId } = body;
+    const { name, price, categoryId, colorId, sizeId, images } = body;
 
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
+    }
+
+    if (!images || !images.length) {
+      return new NextResponse("Images are required", { status: 400 });
     }
 
     if (!price) {
@@ -21,6 +25,14 @@ export async function POST(
 
     if (!categoryId) {
       return new NextResponse("Category id is required", { status: 400 });
+    }
+
+    if (!colorId) {
+      return new NextResponse("Color id is required", { status: 400 });
+    }
+
+    if (!sizeId) {
+      return new NextResponse("Size id is required", { status: 400 });
     }
 
     if (!params.storeId) {
@@ -32,8 +44,17 @@ export async function POST(
         name,
         price,
         categoryId,
-        storeId: params.storeId
-      }
+        colorId,
+        sizeId,
+        storeId: params.storeId,
+        images: {
+          createMany: {
+            data: [
+              ...images.map((image: { url: string }) => image),
+            ],
+          },
+        },
+      },
     });
   
     return NextResponse.json(product);

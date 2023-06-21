@@ -33,6 +33,17 @@ export async function DELETE(
       return new NextResponse("Product id is required", { status: 400 });
     }
 
+    await prismadb.product.update({
+      where: {
+        id: params.productId
+      },
+      data: {
+        images: {
+          deleteMany: {}
+        }
+      }
+    });
+
     const product = await prismadb.product.delete({
       where: {
         id: params.productId
@@ -54,7 +65,7 @@ export async function PATCH(
   try {
     const body = await req.json();
 
-    const { name, price, categoryId } = body;
+    const { name, price, categoryId, images, colorId, sizeId } = body;
 
     if (!params.productId) {
       return new NextResponse("Product id is required", { status: 400 });
@@ -62,6 +73,10 @@ export async function PATCH(
 
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
+    }
+
+    if (!images || !images.length) {
+      return new NextResponse("Images are required", { status: 400 });
     }
 
     if (!price) {
@@ -72,7 +87,15 @@ export async function PATCH(
       return new NextResponse("Category id is required", { status: 400 });
     }
 
-    const product = await prismadb.product.update({
+    if (!colorId) {
+      return new NextResponse("Color id is required", { status: 400 });
+    }
+
+    if (!sizeId) {
+      return new NextResponse("Size id is required", { status: 400 });
+    }
+
+    await prismadb.product.update({
       where: {
         id: params.productId
       },
@@ -80,8 +103,28 @@ export async function PATCH(
         name,
         price,
         categoryId,
-      }
+        colorId,
+        sizeId,
+        images: {
+          deleteMany: {},
+        },
+      },
     });
+
+    const product = await prismadb.product.update({
+      where: {
+        id: params.productId
+      },
+      data: {
+        images: {
+          createMany: {
+            data: [
+              ...images.map((image: { url: string }) => image),
+            ],
+          },
+        },
+      },
+    })
   
     return NextResponse.json(product);
   } catch (error) {

@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { Trash } from "lucide-react"
-import { Category } from "@prisma/client"
+import { Color } from "@prisma/client"
 import { useParams, useRouter } from "next/navigation"
 
 import { Input } from "@/components/ui/input"
@@ -26,15 +26,18 @@ import { AlertModal } from "@/components/modals/alert-modal"
 
 const formSchema = z.object({
   name: z.string().min(2),
+  value: z.string().min(4).max(9).regex(/^#/, {
+    message: 'String must be a valid hex code'
+  }),
 });
 
-type CategoryFormValues = z.infer<typeof formSchema>
+type ColorFormValues = z.infer<typeof formSchema>
 
-interface CategoryFormProps {
-  initialData: Category | null;
+interface ColorFormProps {
+  initialData: Color | null;
 };
 
-export const CategoryForm: React.FC<CategoryFormProps> = ({
+export const ColorForm: React.FC<ColorFormProps> = ({
   initialData
 }) => {
   const params = useParams();
@@ -43,28 +46,28 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? 'Edit category' : 'Create category';
-  const description = initialData ? 'Edit a category.' : 'Add a new category';
-  const toastMessage = initialData ? 'Category updated.' : 'Category created.';
+  const title = initialData ? 'Edit color' : 'Create color';
+  const description = initialData ? 'Edit a color.' : 'Add a new color';
+  const toastMessage = initialData ? 'Color updated.' : 'Color created.';
   const action = initialData ? 'Save changes' : 'Create';
 
-  const form = useForm<CategoryFormValues>({
+  const form = useForm<ColorFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       name: ''
     }
   });
 
-  const onSubmit = async (data: CategoryFormValues) => {
+  const onSubmit = async (data: ColorFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
-        await axios.patch(`/api/${params.storeId}/categories/${params.categoryId}`, data);
+        await axios.patch(`/api/${params.storeId}/colors/${params.colorId}`, data);
       } else {
-        await axios.post(`/api/${params.storeId}/categories`, data);
+        await axios.post(`/api/${params.storeId}/colors`, data);
       }
       router.refresh();
-      router.push(`/${params.storeId}/categories`);
+      router.push(`/${params.storeId}/colors`);
       toast.success(toastMessage);
     } catch (error: any) {
       toast.error('Something went wrong.');
@@ -76,12 +79,12 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/categories/${params.categoryId}`);
+      await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`);
       router.refresh();
-      router.push(`/${params.storeId}/categories`);
-      toast.success('Category deleted.');
+      router.push(`/${params.storeId}/colors`);
+      toast.success('Color deleted.');
     } catch (error: any) {
-      toast.error('Make sure you removed all products using this category first.');
+      toast.error('Make sure you removed all products using this color first.');
     } finally {
       setLoading(false);
       setOpen(false);
@@ -120,7 +123,26 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Category name" {...field} />
+                    <Input disabled={loading} placeholder="Color name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="value"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Value</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center gap-x-4">
+                      <Input disabled={loading} placeholder="Color value" {...field} />
+                      <div 
+                        className="border p-4 rounded-full" 
+                        style={{ backgroundColor: field.value }}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
