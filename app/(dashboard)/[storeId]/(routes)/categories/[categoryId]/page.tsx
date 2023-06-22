@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-
 import prismadb from "@/lib/prismadb";
 
 import { CategoryForm } from "./components/category-form";
