@@ -33,10 +33,11 @@ export const ColorClient: React.FC<ColorClientProps> = ({
       <DataTable searchKey="name" columns={columns} data={data} />
       <Heading title="API" description="API Calls for Colors" />
       <Separator />
-      <ApiAlert title="GET" description={`${window.location.origin}/api/${params.storeId}/colors`} />
-      <ApiAlert title="POST" description={`${window.location.origin}/api/${params.storeId}/colors`} />
-      <ApiAlert title="PATCH" description={`${window.location.origin}/api/${params.storeId}/colors/{colorId}`} />
-      <ApiAlert title="DELETE" description={`${window.location.origin}/api/${params.storeId}/colors/{colorId}`} />
+      <ApiAlert title="GET" variant="public" description={`${window.location.origin}/api/${params.storeId}/colors`} />
+      <ApiAlert title="GET" variant="public" description={`${window.location.origin}/api/${params.storeId}/colors/{colorId}`} />
+      <ApiAlert title="POST" variant="admin" description={`${window.location.origin}/api/${params.storeId}/colors`} />
+      <ApiAlert title="PATCH" variant="admin" description={`${window.location.origin}/api/${params.storeId}/colors/{colorId}`} />
+      <ApiAlert title="DELETE" variant="admin" description={`${window.location.origin}/api/${params.storeId}/colors/{colorId}`} />
     </>
   );
 };
