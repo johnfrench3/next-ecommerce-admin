@@ -102,7 +102,10 @@ export async function GET(
         categoryId,
         colorId,
         sizeId,
-      }
+      },
+      include: {
+        images: true,
+      },
     });
   
     return NextResponse.json(products);

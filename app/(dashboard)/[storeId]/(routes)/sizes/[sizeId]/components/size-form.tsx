@@ -25,8 +25,8 @@ import { Heading } from "@/components/ui/heading"
 import { AlertModal } from "@/components/modals/alert-modal"
 
 const formSchema = z.object({
-  name: z.string().min(2),
-  value: z.string().min(1).max(3),
+  name: z.string().min(1),
+  value: z.string().min(1),
 });
 
 type SizeFormValues = z.infer<typeof formSchema>
