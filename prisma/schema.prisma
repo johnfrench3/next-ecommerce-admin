@@ -12,6 +12,7 @@ model Store {
   id              String    @id @default(uuid())
   name            String
   userId          String
+  billboards      Billboard[] @relation("StoreToBillboard")
   categories      Category[] @relation("StoreToCategory")
   products        Product[]  @relation("StoreToProduct")
   sizes           Size[]     @relation("StoreToSize")
@@ -20,16 +21,32 @@ model Store {
   updatedAt       DateTime   @updatedAt
 }
 
-model Category {
-  id        String   @id @default(uuid())
-  storeId   String   // Foreign Key to Store
-  store     Store    @relation("StoreToCategory", fields: [storeId], references: [id])
-  name      String
-  products  Product[] @relation("CategoryToProduct")
+model Billboard {
+  id        String @id @default(uuid())
+  storeId   String
+  store     Store @relation("StoreToBillboard", fields: [storeId], references: [id])
+  label     String
+  imageUrl  String
+  categories  Category[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([storeId])
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  storeId     String   // Foreign Key to Store
+  store       Store    @relation("StoreToCategory", fields: [storeId], references: [id])
+  billboardId String    // Foreign Key to Billboard
+  billboard   Billboard      @relation(fields: [billboardId], references: [id])
+  name        String
+  products    Product[] @relation("CategoryToProduct")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([storeId])
+  @@index([billboardId])
 }
 
 model Product {
@@ -40,6 +57,7 @@ model Product {
   category    Category  @relation("CategoryToProduct", fields: [categoryId], references: [id])
   name        String
   price       Decimal
+  isFeatured  Boolean   @default(false)
   sizeId      String    // Foreign Key to Size
   size        Size      @relation(fields: [sizeId], references: [id])
   colorId     String    // Foreign Key to Color

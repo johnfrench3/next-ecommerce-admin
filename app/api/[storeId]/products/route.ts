@@ -12,7 +12,7 @@ export async function POST(
 
     const body = await req.json();
 
-    const { name, price, categoryId, colorId, sizeId, images } = body;
+    const { name, price, categoryId, colorId, sizeId, images, isFeatured } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 403 });
@@ -61,6 +61,7 @@ export async function POST(
       data: {
         name,
         price,
+        isFeatured,
         categoryId,
         colorId,
         sizeId,
@@ -91,6 +92,7 @@ export async function GET(
     const categoryId = searchParams.get('categoryId') || undefined;
     const colorId = searchParams.get('colorId') || undefined;
     const sizeId = searchParams.get('sizeId') || undefined;
+    const isFeatured = searchParams.get('isFeatured');
 
     if (!params.storeId) {
       return new NextResponse("Store id is required", { status: 400 });
@@ -102,9 +104,13 @@ export async function GET(
         categoryId,
         colorId,
         sizeId,
+        isFeatured: isFeatured ? true : undefined
       },
       include: {
         images: true,
+        category: true,
+        color: true,
+        size: true,
       },
     });
   

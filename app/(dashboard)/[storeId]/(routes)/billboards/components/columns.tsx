@@ -4,22 +4,16 @@ import { ColumnDef } from "@tanstack/react-table"
 
 import { CellAction } from "./cell-action"
 
-export type CategoryColumn = {
+export type BillboardColumn = {
   id: string
-  name: string;
-  billboardLabel: string;
+  label: string;
   createdAt: string;
 }
 
-export const columns: ColumnDef<CategoryColumn>[] = [
+export const columns: ColumnDef<BillboardColumn>[] = [
   {
-    accessorKey: "name",
-    header: "Name",
-  },
-  {
-    accessorKey: "billboard",
-    header: "Billboard",
-    cell: ({ row }) => row.original.billboardLabel,
+    accessorKey: "label",
+    header: "Label",
   },
   {
     accessorKey: "createdAt",

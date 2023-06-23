@@ -13,12 +13,16 @@ const CategoriesPage = async ({
   const categories = await prismadb.category.findMany({
     where: {
       storeId: params.storeId
+    },
+    include: {
+      billboard: true,
     }
   });
 
   const formattedCategories: CategoryColumn[] = categories.map((item) => ({
     id: item.id,
     name: item.name,
+    billboardLabel: item.billboard.label,
     createdAt: format(item.createdAt, 'MMMM do, yyyy'),
   }));
 

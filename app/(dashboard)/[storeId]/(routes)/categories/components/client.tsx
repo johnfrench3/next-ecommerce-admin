@@ -33,11 +33,11 @@ export const CategoriesClient: React.FC<CategoriesClientProps> = ({
       <DataTable searchKey="name" columns={columns} data={data} />
       <Heading title="API" description="API Calls for Categories" />
       <Separator />
-      <ApiAlert title="GET" variant="public" description={`${window.location.origin}/api/${params.storeId}/categories`} />
-      <ApiAlert title="GET" variant="public" description={`${window.location.origin}/api/${params.storeId}/categories/{categoryId}`} />
-      <ApiAlert title="POST" variant="admin" description={`${window.location.origin}/api/${params.storeId}/categories`} />
-      <ApiAlert title="PATCH" variant="admin" description={`${window.location.origin}/api/${params.storeId}/categories/{categoryId}`} />
-      <ApiAlert title="DELETE" variant="admin" description={`${window.location.origin}/api/${params.storeId}/categories/{categoryId}`} />
+      <ApiAlert title="GET" variant="public" description={`/api/${params.storeId}/categories`} />
+      <ApiAlert title="GET" variant="public" description={`/api/${params.storeId}/categories/{categoryId}`} />
+      <ApiAlert title="POST" variant="admin" description={`/api/${params.storeId}/categories`} />
+      <ApiAlert title="PATCH" variant="admin" description={`/api/${params.storeId}/categories/{categoryId}`} />
+      <ApiAlert title="DELETE" variant="admin" description={`/api/${params.storeId}/categories/{categoryId}`} />
     </>
   );
 };

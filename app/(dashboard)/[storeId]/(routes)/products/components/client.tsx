@@ -33,11 +33,11 @@ export const ProductsClient: React.FC<ProductsClientProps> = ({
       <DataTable searchKey="name" columns={columns} data={data} />
       <Heading title="API" description="API Calls for Products" />
       <Separator />
-      <ApiAlert title="GET" variant="public" description={`${window.location.origin}/api/${params.storeId}/products`} />
-      <ApiAlert title="GET" variant="public" description={`${window.location.origin}/api/${params.storeId}/products/{productId}`} />
-      <ApiAlert title="POST" variant="admin" description={`${window.location.origin}/api/${params.storeId}/products`} />
-      <ApiAlert title="PATCH" variant="admin" description={`${window.location.origin}/api/${params.storeId}/products/{productId}`} />
-      <ApiAlert title="DELETE" variant="admin" description={`${window.location.origin}/api/${params.storeId}/products/{productId}`} />
+      <ApiAlert title="GET" variant="public" description={`/api/${params.storeId}/products`} />
+      <ApiAlert title="GET" variant="public" description={`/api/${params.storeId}/products/{productId}`} />
+      <ApiAlert title="POST" variant="admin" description={`/api/${params.storeId}/products`} />
+      <ApiAlert title="PATCH" variant="admin" description={`/api/${params.storeId}/products/{productId}`} />
+      <ApiAlert title="DELETE" variant="admin" description={`/api/${params.storeId}/products/{productId}`} />
     </>
   );
 };
