@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import { ApiAlert } from "@/components/ui/api-alert";
+import { ApiList } from "@/components/ui/api-list";
 
 import { columns, ColorColumn } from "./columns";
 
@@ -33,11 +33,7 @@ export const ColorClient: React.FC<ColorClientProps> = ({
       <DataTable searchKey="name" columns={columns} data={data} />
       <Heading title="API" description="API Calls for Colors" />
       <Separator />
-      <ApiAlert title="GET" variant="public" description={`/api/${params.storeId}/colors`} />
-      <ApiAlert title="GET" variant="public" description={`/api/${params.storeId}/colors/{colorId}`} />
-      <ApiAlert title="POST" variant="admin" description={`/api/${params.storeId}/colors`} />
-      <ApiAlert title="PATCH" variant="admin" description={`/api/${params.storeId}/colors/{colorId}`} />
-      <ApiAlert title="DELETE" variant="admin" description={`/api/${params.storeId}/colors/{colorId}`} />
+      <ApiList entityName="colors" entityIdName="colorId" />
     </>
   );
 };

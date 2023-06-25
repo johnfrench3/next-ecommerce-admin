@@ -6,10 +6,10 @@ import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
+import { Separator } from "@/components/ui/separator";
+import { ApiList } from "@/components/ui/api-list";
 
 import { ProductColumn, columns } from "./columns";
-import { Separator } from "@/components/ui/separator";
-import { ApiAlert } from "@/components/ui/api-alert";
 
 interface ProductsClientProps {
   data: ProductColumn[];
@@ -33,11 +33,7 @@ export const ProductsClient: React.FC<ProductsClientProps> = ({
       <DataTable searchKey="name" columns={columns} data={data} />
       <Heading title="API" description="API Calls for Products" />
       <Separator />
-      <ApiAlert title="GET" variant="public" description={`/api/${params.storeId}/products`} />
-      <ApiAlert title="GET" variant="public" description={`/api/${params.storeId}/products/{productId}`} />
-      <ApiAlert title="POST" variant="admin" description={`/api/${params.storeId}/products`} />
-      <ApiAlert title="PATCH" variant="admin" description={`/api/${params.storeId}/products/{productId}`} />
-      <ApiAlert title="DELETE" variant="admin" description={`/api/${params.storeId}/products/{productId}`} />
+      <ApiList entityName="products" entityIdName="productId" />
     </>
   );
 };

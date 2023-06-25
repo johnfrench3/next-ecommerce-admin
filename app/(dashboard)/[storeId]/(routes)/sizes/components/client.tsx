@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import { ApiAlert } from "@/components/ui/api-alert";
+import { ApiList } from "@/components/ui/api-list";
 
 import { columns, SizeColumn } from "./columns";
 
@@ -33,11 +33,7 @@ export const SizesClient: React.FC<SizesClientProps> = ({
       <DataTable searchKey="name" columns={columns} data={data} />
       <Heading title="API" description="API Calls for Sizes" />
       <Separator />
-      <ApiAlert title="GET" variant="public" description={`/api/${params.storeId}/sizes`} />
-      <ApiAlert title="GET" variant="public" description={`/api/${params.storeId}/sizes/{sizeId}`} />
-      <ApiAlert title="POST" variant="admin" description={`/api/${params.storeId}/sizes`} />
-      <ApiAlert title="PATCH" variant="admin" description={`/api/${params.storeId}/sizes/{sizeId}`} />
-      <ApiAlert title="DELETE" variant="admin" description={`/api/${params.storeId}/sizes/{sizeId}`} />
+      <ApiList entityName="sizes" entityIdName="sizeId" />
     </>
   );
 };

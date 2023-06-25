@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import { ApiAlert } from "@/components/ui/api-alert";
+import { ApiList } from "@/components/ui/api-list";
 
 import { columns, BillboardColumn } from "./columns";
 
@@ -33,11 +33,7 @@ export const BillboardClient: React.FC<BillboardClientProps> = ({
       <DataTable searchKey="label" columns={columns} data={data} />
       <Heading title="API" description="API Calls for Billboards" />
       <Separator />
-      <ApiAlert title="GET" variant="public" description={`/api/${params.storeId}/billboards`} />
-      <ApiAlert title="GET" variant="public" description={`/api/${params.storeId}/billboards/{billboardId}`} />
-      <ApiAlert title="POST" variant="admin" description={`/api/${params.storeId}/billboards`} />
-      <ApiAlert title="PATCH" variant="admin" description={`/api/${params.storeId}/billboards/{billboardId}`} />
-      <ApiAlert title="DELETE" variant="admin" description={`/api/${params.storeId}/billboards/{billboardId}`} />
+      <ApiList entityName="billboards" entityIdName="billboardId" />
     </>
   );
 };
